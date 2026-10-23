@@ -1,0 +1,24 @@
+# Build outputs
+bin/
+obj/
+dist/
+publish/
+*.exe
+*.dll
+*.pdb
+*.zip
+
+# User‑specific files
+*.user
+*.suo
+*.cache
+.vs/
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Environment
+.env
+*.log
