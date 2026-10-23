@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MW4 Optimizer — FPS & Latency Boost for Call of Duty: Modern Warfare 4</title>
+  <meta name="description" content="Free open-source Windows tool that boosts FPS, reduces stutter, and lowers input latency in Call of Duty: Modern Warfare 4. One-click apply, fully reversible. No game files modified.">
+  <meta name="keywords" content="MW4 optimizer, Call of Duty Modern Warfare 4, FPS boost, latency tweaks, stutter fix, Windows optimizer, game performance">
+  <meta name="author" content="MedicPergola">
+  <meta property="og:title" content="MW4 Optimizer — Performance Tool for Modern Warfare 4">
+  <meta property="og:description" content="One-click FPS boost, stutter reduction, and latency tweaks. Open-source and reversible.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0d1117">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --bg-2: #0d1117;
+      --card: #161b22;
+      --card-hover: #1c2129;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent-2: #79c0ff;
+      --green: #3fb950;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--accent-2); }
+    code {
+      background: #21262d;
+      padding: .15em .45em;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-size: .9em;
+      color: #e6edf3;
+    }
+
+    /* ── NAV ─────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(10, 14, 20, .75);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: var(--muted); font-size: .95rem; }
+    .nav-links a:hover { color: #fff; }
+
+    /* ── HERO ────────────────────────── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(88,166,255,.15) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-block;
+      padding: .35rem .9rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      background: var(--card);
+    }
+    .badge::before {
+      content: "●";
+      color: var(--green);
+      margin-right: .5rem;
+      font-size: .7rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, var(--accent), #a371f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .lead {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 2rem;
+    }
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .85rem 1.75rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all .2s;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #a371f7);
+      color: #0a0e14;
+      box-shadow: 0 4px 20px rgba(88,166,255,.25);
+    }
+    .btn-primary:hover {
+      color: #0a0e14;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(88,166,255,.4);
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* ── SECTION ─────────────────────── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-title h2 {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      color: #fff;
+      margin-bottom: .75rem;
+      letter-spacing: -0.01em;
+    }
+    .section-title p {
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── FEATURES ────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .feature {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      transition: all .25s;
+    }
+    .feature:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      background: rgba(88,166,255,.1);
+      border: 1px solid rgba(88,166,255,.2);
+    }
+    .feature h3 {
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: .5rem;
+    }
+    .feature p {
+      font-size: .92rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── DOWNLOAD CARD ───────────────── */
+    .download-card {
+      background: linear-gradient(135deg, rgba(88,166,255,.08), rgba(163,113,247,.08));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .download-card h2 {
+      font-size: 1.75rem;
+      color: #fff;
+      margin-bottom: .75rem;
+    }
+    .download-card p {
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+    .file-meta {
+      display: inline-flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1.5rem;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+    .file-meta span strong { color: var(--text); }
+
+    /* ── TABLE ───────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .93rem;
+    }
+    th, td {
+      padding: .85rem 1.1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: #1c2129;
+      color: #fff;
+      font-weight: 600;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(88,166,255,.04); }
+    .tag-yes { color: var(--green); font-weight: 600; }
+    .tag-no  { color: #f85149; font-weight: 600; }
+
+    /* ── FAQ ─────────────────────────── */
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: .75rem;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .faq-item:hover { border-color: var(--accent); }
+    .faq-item summary {
+      font-weight: 600;
+      color: #fff;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1rem;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      font-size: 1.5rem;
+      color: var(--accent);
+      transition: transform .2s;
+    }
+    .faq-item[open] summary::after {
+      content: "−";
+    }
+    .faq-item p {
+      color: var(--muted);
+      margin-top: .85rem;
+      font-size: .93rem;
+    }
+
+    /* ── FOOTER ──────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+      background: var(--bg-2);
+    }
+    footer .links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    footer .disclaimer {
+      max-width: 700px;
+      margin: 1rem auto 0;
+      font-size: .78rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .nav-links a:not(.btn) { display: none; }
+      .hero { padding: 3rem 1rem 2rem; }
+      section { padding: 3rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">⚡ MW4 <span>Optimizer</span></a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a href="#compat">Compatibility</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/MedicPergola/MW4-Optimizer" class="btn btn-secondary" style="padding:.5rem 1rem;font-size:.9rem;">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="badge">v1.0.0 · Open Source · MIT License</span>
+  <h1>Boost your <span class="grad">Modern Warfare 4</span><br>performance in one click</h1>
+  <p class="lead">
+    MW4 Optimizer is a portable Windows utility that applies proven system-level tweaks
+    to increase FPS stability, reduce stutter, and lower input latency — without touching game files.
+  </p>
+  <div class="cta-row">
+    <a href="MW4_Optimizer_v1.0.zip" class="btn btn-primary" download>
+      ⬇️ Download MW4 Optimizer
+    </a>
+    <a href="https://github.com/MedicPergola/MW4-Optimizer" class="btn btn-secondary">
+      📖 View Source
+    </a>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-title">
+    <h2>What it does</h2>
+    <p>Every tweak is documented, logged, and fully reversible from a single button.</p>
+  </div>
+  <div class="grid">
+    <div class="feature">
+      <div class="feature-icon">⚙️</div>
+      <h3>CPU Priority Boost</h3>
+      <p>Raises the game process priority so the OS delivers frames more consistently.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🧹</div>
+      <h3>Memory Cleanup</h3>
+      <p>Flushes unused working sets to reduce micro-stutters during heavy scenes.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📡</div>
+      <h3>Network Latency Tweaks</h3>
+      <p>Disables Nagle’s algorithm for the game to improve hit-reg and reduce ping spikes.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎮</div>
+      <h3>GPU Scheduling</h3>
+      <p>Enables Hardware-Accelerated GPU Scheduling (HAGS) to cut render latency.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🚫</div>
+      <h3>Background Trimming</h3>
+      <p>Suspends non-essential processes while you play — more resources for the game.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">↩️</div>
+      <h3>One-Click Restore</h3>
+      <p>Every change is logged. Restore the original state of your system in a single click.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="download-card">
+    <h2>📥 Download MW4 Optimizer</h2>
+    <p>Portable executable — no installation required.</p>
+    <a href="MW4_Optimizer_v1.0.zip" class="btn btn-primary" style="font-size:1.05rem;padding:1rem 2.25rem;" download>
+      ⬇️ Download MW4 Optimizer
+    </a>
+    <div class="file-meta">
+      <span><strong>File:</strong> <code>MW4_Optimizer.exe</code></span>
+      <span><strong>Archive:</strong> <code>MW4_Optimizer_v1.0.zip</code></span>
+      <span><strong>Platform:</strong> Windows 10 / 11 (64-bit)</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPATIBILITY TABLE -->
+<section id="compat">
+  <div class="section-title">
+    <h2>Compatibility &amp; Safety</h2>
+    <p>Understand exactly what the tool does — and what it doesn’t.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Windows 10 (64-bit)</td>
+          <td><span class="tag-yes">✔ Supported</span></td>
+          <td>.NET Framework 4.8 required</td>
+        </tr>
+        <tr>
+          <td>Windows 11 (64-bit)</td>
+          <td><span class="tag-yes">✔ Supported</span></td>
+          <td>Recommended for HAGS feature</td>
+        </tr>
+        <tr>
+          <td>Windows 7 / 8 / 8.1</td>
+          <td><span class="tag-no">✘ Not supported</span></td>
+          <td>Missing required APIs</td>
+        </tr>
+        <tr>
+          <td>Modifies game files</td>
+          <td><span class="tag-no">✘ No</span></td>
+          <td>Game directory is untouched</td>
+        </tr>
+        <tr>
+          <td>Anti-cheat interaction</td>
+          <td><span class="tag-no">✘ No</span></td>
+          <td>No memory read/write access</td>
+        </tr>
+        <tr>
+          <td>Telemetry / outbound calls</td>
+          <td><span class="tag-no">✘ No</span></td>
+          <td>Optional update check only</td>
+        </tr>
+        <tr>
+          <td>All changes reversible</td>
+          <td><span class="tag-yes">✔ Yes</span></td>
+          <td>“Restore Defaults” button</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-title">
+    <h2>Frequently Asked Questions</h2>
+    <p>Everything you need to know before downloading.</p>
+  </div>
+
+  <details class="faq-item">
+    <summary>Is MW4 Optimizer free?</summary>
+    <p>Yes. The tool is released under the MIT License — free to use, inspect, and modify. The source code is available on GitHub.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Will it get me banned?</summary>
+    <p>No. The tool does not touch the game process memory or anti-cheat. It only applies documented Windows APIs to the system, exactly as a user could do manually via Task Manager or Registry Editor.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Do I need administrator rights?</summary>
+    <p>Yes — a few of the system tweaks (such as process priority and registry settings) require elevation. Right-click the executable and choose <em>Run as administrator</em>.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>How do I revert all changes?</summary>
+    <p>Open the tool and click <strong>Restore Defaults</strong>. Every change is journaled, so the original state is restored precisely.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Does it work with other Call of Duty titles?</summary>
+    <p>MW4 Optimizer is tuned for <em>Modern Warfare 4</em>. Some features (CPU priority, memory cleanup) will work for any game, but the network and process detection logic is MW4-specific.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>How do I verify the archive integrity?</summary>
+    <p>Compare the SHA-256 hash of your downloaded archive against the value published in the repository’s <code>SECURITY.md</code> file. Never run a build whose hash does not match.</p>
+  </details>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="links">
+    <a href="https://github.com/MedicPergola/MW4-Optimizer">GitHub</a>
+    <a href="https://github.com/MedicPergola/MW4-Optimizer/blob/main/SECURITY.md">Security Policy</a>
+    <a href="https://github.com/MedicPergola/MW4-Optimizer/blob/main/LICENSE">License</a>
+    <a href="https://github.com/MedicPergola/MW4-Optimizer/issues">Report a Bug</a>
+  </div>
+  <div class="disclaimer">
+    <p>© 2026 MedicPergola · Released under the MIT License.</p>
+    <p style="margin-top:.5rem;">
+      Not affiliated with or endorsed by Activision. “Call of Duty” and “Modern Warfare” are trademarks of their respective owners. Use at your own risk.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
